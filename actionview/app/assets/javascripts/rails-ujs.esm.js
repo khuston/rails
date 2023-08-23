@@ -469,13 +469,12 @@ const handleRemoteWithRails = rails => function(e) {
     if (method.toUpperCase() === "GET") {
       url = url.replace(/\?.*$/, "");
     }
-    if (element.enctype === "multipart/form-data") {
-      data = new FormData(element);
-      if (button != null) {
-        data.append(button.name, button.value);
-      }
-    } else {
-      data = serializeElement(element, button);
+    data = new FormData(element);
+    if (button != null) {
+      data.append(button.name, button.value);
+    }
+    if (element.enctype !== "multipart/form-data") {
+      data = new URLSearchParams(data).toString();
     }
     setData(element, "ujs:submit-button", null);
     setData(element, "ujs:submit-button-formmethod", null);
